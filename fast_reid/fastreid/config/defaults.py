@@ -212,7 +212,7 @@ _C.DATALOADER = CN()
 _C.DATALOADER.SAMPLER_TRAIN = "TrainingSampler"
 # Number of instance for each person
 _C.DATALOADER.NUM_INSTANCE = 4
-_C.DATALOADER.NUM_WORKERS = 8
+_C.DATALOADER.NUM_WORKERS = 4
 
 # For set re-weight
 _C.DATALOADER.SET_WEIGHT = []

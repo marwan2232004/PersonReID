@@ -16,6 +16,7 @@ from torch.nn.parallel import DataParallel, DistributedDataParallel
 import fast_reid.fastreid.utils.comm as comm
 from fast_reid.fastreid.utils.events import EventStorage, get_event_storage
 from fast_reid.fastreid.utils.params import ContiguousParams
+from torch.amp import GradScaler, autocast
 
 __all__ = ["HookBase", "TrainerBase", "SimpleTrainer"]
 
@@ -325,9 +326,7 @@ class AMPTrainer(SimpleTrainer):
         super().__init__(model, data_loader, optimizer, param_wrapper)
 
         if grad_scaler is None:
-            from torch.cuda.amp import GradScaler
-
-            grad_scaler = GradScaler()
+            grad_scaler = GradScaler('cuda')
         self.grad_scaler = grad_scaler
 
     def run_step(self):
@@ -336,13 +335,12 @@ class AMPTrainer(SimpleTrainer):
         """
         assert self.model.training, "[AMPTrainer] model was changed to eval mode!"
         assert torch.cuda.is_available(), "[AMPTrainer] CUDA is required for AMP training!"
-        from torch.cuda.amp import autocast
 
         start = time.perf_counter()
         data = next(self._data_loader_iter)
         data_time = time.perf_counter() - start
 
-        with autocast():
+        with autocast('cuda'):
             loss_dict = self.model(data)
             losses = sum(loss_dict.values())
 
