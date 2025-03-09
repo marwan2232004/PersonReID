@@ -22,7 +22,7 @@ def generate_trajectories(file_path, GroundTrues):
 
     if GroundTrues:     # filter objects
         # values = values[values[:, 6] == 1, :]  # Remove ignore objects, only active objects
-        # values = values[values[:, 7] == 1, :]  # Pedestrian only
+        values = values[values[:, 7] == 1, :]  # Pedestrian only
         values = values[values[:, 8] > 0.4, :]  # visibility only
 
     values = np.array(values)
@@ -37,6 +37,7 @@ def make_parser():
     parser.add_argument("--data_path", default="", help="path to MOT data")
     parser.add_argument("--save_path", default="fast_reid/datasets", help="Path to save the MOT-ReID dataset")
     parser.add_argument("--mot", default=17, help="MOTChallenge dataset number e.g. 17, 20")
+    parser.add_argument("--seq-count", default=0, help="Number of sequences to process")    
 
     return parser
 
@@ -63,7 +64,12 @@ def main(args):
 
     id_offset = 0
 
-    for seq in seqs:        # iteration over seqs
+    cnt = 0
+
+    for seq in seqs:  # iteration over seqs
+        if args.seq_count > 0 and cnt >= args.seq_count:
+            break
+
         print("current seq", seq)
         print("current id_offset", id_offset)
 
@@ -110,7 +116,7 @@ def main(args):
                     cv2.imwrite(os.path.join(train_save_path, fileName), patch)
                 else:
                     cv2.imwrite(os.path.join(test_save_path, fileName), patch)
-
+        cnt += 1
         id_offset += max_id_per_seq
 
 
