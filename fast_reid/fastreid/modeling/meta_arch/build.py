@@ -22,5 +22,9 @@ def build_model(cfg):
     """
     meta_arch = cfg.MODEL.META_ARCHITECTURE
     model = META_ARCH_REGISTRY.get(meta_arch)(cfg)
+    print('-----------------------')
+    print(cfg.MODEL.DEVICE)
+    print(torch.device(cfg.MODEL.DEVICE))
+    print('-----------------------')
     model.to(torch.device(cfg.MODEL.DEVICE))
     return model
