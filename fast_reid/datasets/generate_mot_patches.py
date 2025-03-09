@@ -52,6 +52,8 @@ def main(args):
     test_save_path = os.path.join(save_path, 'bounding_box_test')
     os.makedirs(test_save_path, exist_ok=True)
 
+    max_seq = int(args.seq_count)
+
     # Get gt data
     data_path = os.path.join(args.data_path, 'MOT' + str(args.mot), 'train')
 
@@ -67,7 +69,7 @@ def main(args):
     cnt = 0
 
     for seq in seqs:  # iteration over seqs
-        if args.seq_count > 0 and cnt >= args.seq_count:
+        if max_seq > 0 and cnt >= max_seq:
             break
 
         print("current seq", seq)
