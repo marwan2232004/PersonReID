@@ -336,6 +336,9 @@ class AMPTrainer(SimpleTrainer):
         assert self.model.training, "[AMPTrainer] model was changed to eval mode!"
         assert torch.cuda.is_available(), "[AMPTrainer] CUDA is required for AMP training!"
 
+        device = next(self.model.parameters()).device
+        print(f"Model is on: {device}")
+
         start = time.perf_counter()
         data = next(self._data_loader_iter)
         data_time = time.perf_counter() - start
