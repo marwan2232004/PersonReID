@@ -258,6 +258,7 @@ class DefaultTrainer(TrainerBase):
 
         if resume and self.checkpointer.has_checkpoint():
             self.start_epoch = checkpoint.get("epoch", -1) + 1
+            self.max_epoch = self.max_epoch + self.start_epoch
             # The checkpoint stores the training iteration that just finished, thus we start
             # at the next iteration (or iter zero if there's no checkpoint).
 
