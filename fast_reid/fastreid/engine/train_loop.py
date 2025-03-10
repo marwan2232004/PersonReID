@@ -343,11 +343,11 @@ class AMPTrainer(SimpleTrainer):
         data = next(self._data_loader_iter)
         data_time = time.perf_counter() - start
 
-        with autocast('cuda'):
+        with autocast(device_type='cuda',dtype=torch.float16):
             loss_dict = self.model(data)
             losses = sum(loss_dict.values())
 
-        self.optimizer.zero_grad()
+        self.optimizer.zero_grad(set_to_none=False)
         self.grad_scaler.scale(losses).backward()
 
         self._write_metrics(loss_dict, data_time)
