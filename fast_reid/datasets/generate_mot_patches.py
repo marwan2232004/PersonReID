@@ -37,7 +37,8 @@ def make_parser():
     parser.add_argument("--data_path", default="", help="path to MOT data")
     parser.add_argument("--save_path", default="fast_reid/datasets", help="Path to save the MOT-ReID dataset")
     parser.add_argument("--mot", default=17, help="MOTChallenge dataset number e.g. 17, 20")
-    parser.add_argument("--seq-count", default=0, help="Number of sequences to process")    
+    parser.add_argument("--seq-count", default=0, help="Number of sequences to process")
+    parser.add_argument("--shift", default=0, help="The starting index of the sequences. (if 1 then it will start from second folder and take seq-count folders)")    
 
     return parser
 
@@ -53,6 +54,7 @@ def main(args):
     os.makedirs(test_save_path, exist_ok=True)
 
     max_seq = int(args.seq_count)
+    shift = int(args.shift)
 
     # Get gt data
     data_path = os.path.join(args.data_path, 'MOT' + str(args.mot), 'train')
@@ -69,6 +71,9 @@ def main(args):
     cnt = 0
 
     for seq in seqs:  # iteration over seqs
+        if int(args.shift) > 0:
+            shift -= 1
+            continue
         if max_seq > 0 and cnt >= max_seq:
             break
 
