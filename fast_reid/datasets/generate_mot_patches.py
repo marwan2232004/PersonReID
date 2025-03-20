@@ -71,9 +71,10 @@ def main(args):
     cnt = 0
 
     for seq in seqs:  # iteration over seqs
-        if int(args.shift) > 0:
+        if shift > 0:
             shift -= 1
             continue
+
         if max_seq > 0 and cnt >= max_seq:
             break
 
