@@ -1,7 +1,7 @@
 _BASE_: Base-bagtricks.yml
 
 MODEL:
-  FREEZE_LAYERS: [ backbone ]
+  FREEZE_LAYERS: [backbone.conv1, backbone.bn1, backbone.layer1, backbone.layer2 ,backbone.layer3]
 
   BACKBONE:
     WITH_NL: True
@@ -41,7 +41,7 @@ SOLVER:
     ENABLED: True
   OPT: Adam
   MAX_EPOCH: 30
-  BASE_LR: 0.00035
+  BASE_LR: 0.0035
   WEIGHT_DECAY: 0.0005
   IMS_PER_BATCH: 64
 
@@ -52,7 +52,7 @@ SOLVER:
   WARMUP_FACTOR: 0.1
   WARMUP_ITERS: 1000
 
-  FREEZE_ITERS: 800
+  FREEZE_ITERS: 35000
 
   CHECKPOINT_PERIOD: 5    # [hgx0916] 1 --> 5
 
